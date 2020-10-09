@@ -1,0 +1,18 @@
+/*
+NEVER EDIT MANAGE.PY
+*/
+Create new Project: django-admin startproject "projectname"
+Start the server: python manage.py runserver
+Make an app: python manage.py startapp "appname"
+Create superuser: python manage.py createsuperuser
+Migrate: python manage.py migrate
+
+Database commands:
+/*
+TO USE THE DJANGO DATABASE API: python manage.py shell
+*/
+Examples:
+from tribes.models import Tribe
+Tribe.objects.filter(location='San Marcos, CA')
+
+

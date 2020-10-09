@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>NativeToMe</title>
+  </head>
+  <body style="width: 100vw;">
+  	<!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="collapse navbar-collapse" style="justify-content-between;" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+		      </li>
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLeft" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		         Tribes
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdownLeft">
+		          {% if user.is_authenticated %}
+					<a class="dropdown-item" href="/tribes/tribeSearchPage.html">Search Tribes</a>
+		            <a class="dropdown-item" href="/tribes/tribeCreatePage.html">Create Tribe</a>
+                    {% else %}
+                    <a class="dropdown-item" href="/accounts/login.html">Search Tribes</a>
+		            <a class="dropdown-item" href="/accounts/login.html">Create Tribe</a>
+                    {% endif %}
+		        </div>
+		      </li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+		      <li class="nav-item dropdown">
+		        {% if user.is_authenticated %}
+				<div class="dropdown dropleft" style="margin-right:75px">
+  					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username}}
+  					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="{% url 'accounts:profileView' %}">View Profile</a>
+						<a class="dropdown-item" href="#">Edit Profile</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{% url 'accounts:logoutView' %}">Logout</a>
+					</div>
+				</div>
+			  </li>
+			{% else %}
+				<li class="nav-item dropdown">
+				<div class="dropdown dropleft" style="margin-right:75px">
+  					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile
+  					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="{% url 'accounts:loginView' %}">View Profile</a>
+						<a class="dropdown-item" href="#">Edit Profile</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{% url 'accounts:loginView' %}">Login</a>
+					</div>
+				</div>
+
+			  </li>
+			{% endif %}
+		      </li>
+			</ul>
+        </div>
+    </nav>
+
+  	<!--Typography-->
+  	<div class="container">
+		{% load static %}
+		<img src="{% static "Banners/Banner-1.PNG" %}" height="auto" width="100%">
+  		<h1 class="page-header">Welcome to NativeToMe! <small></small></h1>
+
+  		<p class="lead">Join a tribe of people that have the same values as you!</p>
+  		<p> NativeToMe will break the mold of other social media sites and bring people together
+		based on the same interests, characteristics, and values as one-another! Find a group that
+		makes you feel at home! Create your own tribe with values that other may have with you!
+		Create your own personal profile to describe who you are and begin searching for a
+		tribe that best represents you!</p>
+
+  		<hr style="padding:15px">
+			<style>
+				.column {
+					float: left;
+					width: 33.33%;
+					padding: 5px;
+				}
+				.row::after{
+					content:"";
+					clear:both;
+					display:table;
+				}
+			</style>
+		  <!--Alignment & Transformation -->
+		<div class="row"style="width:90%;margin:auto">
+			<div class="column">
+				<p class="text-left">Join a tribe!</p> {% load static %}
+				<img src="{% static "Icons/Tribe.PNG" %}" height="90" width="90">
+			</div>
+			<div class="column">
+				<p class="text-center">Share interests in your life!</p>
+				<p class="text-center"> {% load static %}
+				<img src="{% static "Icons/Icon-4.PNG" %}" height="90" width="90"></p>
+			</div>
+			<div class="column">
+				<p class="text-right">Other stuff!!!</p>
+				<p class="text-right"> {% load static %}
+				<img src="{% static "Icons/Icon-5.PNG" %}" height="90" width="90"></p>
+			</div>
+		</div>
+  		<!--Clear float-->
+  		<div class="clearfix"></div>
+
+ 
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

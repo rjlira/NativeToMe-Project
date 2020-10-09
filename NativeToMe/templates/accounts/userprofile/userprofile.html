@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+   <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="collapse navbar-collapse" style="justify-content-between;" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+		      </li>
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLeft" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		         Tribes
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdownLeft">
+		          {% if user.is_authenticated %}
+					<a class="dropdown-item" href="/tribes/tribeSearchPage.html">Search Tribes</a>
+		            <a class="dropdown-item" href="/tribes/tribeCreatePage.html">Create Tribe</a>
+                    {% else %}
+                    <a class="dropdown-item" href="/accounts/login.html">Search Tribes</a>
+		            <a class="dropdown-item" href="/accounts/login.html">Create Tribe</a>
+                    {% endif %}
+		        </div>
+		      </li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+		      <li class="nav-item dropdown">
+		        {% if user.is_authenticated %}
+				<div class="dropdown dropleft" style="margin-right:75px">
+  					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{ user.username }}
+  					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="{% url 'accounts:profileView' %}">View Profile</a>
+						<a class="dropdown-item" data-toggle="modal" href="#exampleModal" id="editTribe">Edit Profile</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{% url 'accounts:logoutView' %}">Logout</a>
+					</div>
+				</div>
+			  </li>
+			{% else %}
+				<li class="nav-item dropdown">
+				<div class="dropdown dropleft" style="margin-right:75px">
+  					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile
+  					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="{% url 'accounts:loginView' %}">View Profile</a>
+						<a class="dropdown-item" href="#">Edit Profile</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{% url 'accounts:loginView' %}">Login</a>
+					</div>
+				</div>
+
+			  </li>
+			{% endif %}
+		      </li>
+			</ul>
+        </div>
+    </nav>
+
+<div class="container" style="display: flex; flex: 1 1 100%; flex-direction: row; flex-wrap: wrap;">
+
+    <!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <h6>About</h6>
+                        <hr>
+                        <label>From</label>
+                        {{ form.location }}
+                        <label>School</label>
+                        {{ form.school }}
+                        <label>Hobbies</label>
+                        {{ form.hobbies }}
+                        <label>Bio</label>
+                        {{ form.bio }}
+                        <label>Top Likes</label>
+                        {{ form.likes }}
+                        <label>Top Dislikes</label>
+                        {{ form.dislikes }}
+						<label>Upload New Profile Image</label>
+						<input type="File">
+						{{ form.image }}
+			
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" value="Save Changes"/>
+                        </div>
+                    </form>
+                </div>
+			</div>
+		</div>
+	</div>
+    {% load static %}
+    <img src="{% static "Banners/Banner-2.PNG" %}" height="auto" width="100%">
+    <h3 class="page-header"></h3>
+    <div class="card" style="flex:1 100%; order: 0;">
+        <div class="card-body">
+            <h3>{{ user.username }}'s Tent</h3>
+            <div class="form-group">
+
+       		<img class="rounded-circle account-img" src="{{ user.userprofile.image.url }}" width="150" height="150">
+                <br>
+                <label>Upload File</label>
+                <input type="File">
+                <p class="help-block">Only .png and .jpg allowed</p>
+
+            </div>
+        </div>
+    </div>
+
+    <!--Cards-->
+    <div style="flex: 1 4 25%; margin-right: 1%">
+        <div class="card" >
+            <div class="card-body">
+                <h5 class="card-title">Likes</h5>
+                <p class="card-text"> </p>
+
+
+		<ul class="list-group">
+		    <li class="list-group-item">{{ profile.likes }} </li>
+		</ul>
+
+
+            </div>
+            <hr>
+            <div class="card-body">
+                <h5 class="card-title">Dislikes</h5>
+		<p class="card-text"> </p>
+
+
+		<ul class="list-group">
+		    <li class="list-group-item">{{ profile.dislikes }} </li>
+		</ul>
+
+
+            </div>
+            <hr>
+                <div class="card-body">
+                    <h3 class="card-title">Latest photos</h3>
+                    {% load static %}
+                    <img src="{% static "images/vacation.jpg" %}">
+                </div>
+            </div>
+
+    </div>
+    <div style="flex:4 1 74%;">
+        <div class="card" style="margin-bottom=1%;">
+            <div class="card-body" >
+                <h5 class="card-title"><strong>About</strong></h5>
+		<ul class="list-group">
+		    <li class="list-group-item">Bio: {{ profile.bio }} </li>
+		</ul>
+                <ul class="list-group">
+                    <li class="list-group-item">From: {{ profile.location }} </li>
+                    <li class="list-group-item">School: {{ profile.school }}</li>
+                    <li class="list-group-item">Tribes: </li>
+                    <li class="list-group-item">Hobbies: {{ profile.hobbies }}</li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="card" style="flex:4 1 60%;">
+            <div class="card-body">
+                <h5 class="card-title" >Recent Posts by {{ user.username }}
+					{% if inTribe == True %}
+					<a class="btn btn-secondary" data-toggle="modal" href="#tribePostModal" id="tribePost">Create Post</a>
+					{% endif %}
+				</h5>
+
+				<!--Create Tribe Post Modal -->
+				<div class="modal fade" id="tribePostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Create New Post</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form method="POST">
+									{% csrf_token %}
+									<label>Title</label>
+									{{ createPostForm.title }}
+									<label>Description</label>
+									{{ createPostForm.description }}
+									<label>Attach an image</label>
+									{{ createPostForm.image }}
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										<input type="submit" value="Save Changes"/>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% for p in posts %}
+                <div class="card" style="margin-top:1%;">
+                    <div class="card-header">
+                        <div class="mr-2">
+					{% load static %}
+
+							<img class="rounded-circle" width="45" src="{% static "images/blankProfile.jpg" %}">
+							<span style="margin-left: 5px;">{% for name in p.tribePosterID.all %}{{ name }}{% endfor %} of {% for name in p.postTribeID.all %}{{ name }}{% endfor %}</span>
+                        </div>
+
+						<h5 class="card-title" style="padding: 0.2em"> {{ p.title }} </h5>
+						<div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ p.dateOfCreation }}</div>
+						</div>
+						<hr>
+
+						<p class="card-text">
+							{{ p.description }}
+						</p>
+						<div class="card-footer">
+							<a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+							<a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+							<a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+						</div>
+                </div>
+				{% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="{% static 'js/home.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+		$( "#editProfile" ).click(function() {
+    		$('#exampleModal').modal('toggle');
+		});
+	</script>
+</body>
+</html>

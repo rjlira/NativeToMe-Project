@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <title>TribeName | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!--Scripts go here-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="collapse navbar-collapse" style="justify-content-between;" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+		      </li>
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLeft" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		         Tribes
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdownLeft">
+					{% if user.is_authenticated %}
+						<a class="dropdown-item" href="/tribes/tribeSearchPage.html">Search Tribes</a>
+						{% if user.username == tribe.tribeOwner %}
+						<a class="dropdown-item"href="{% url 'tribes:tribeManagePage' tribe.tribeID %}" id="editTribe">Manage Tribe</a>
+						{% endif %}
+
+							{% if inTribe == False %}
+							<a class="dropdown-item" href="#">Request to Join Tribe</a>
+							{% endif %}
+
+						<a class="dropdown-item" href="/tribes/tribeCreatePage.html">Create Tribe</a>
+						{% else %}
+						<a class="dropdown-item" href="/accounts/login.html">Search Tribes</a>
+						<a class="dropdown-item" href="/accounts/login.html">Create Tribe</a>
+					{% endif %}
+		        </div>
+		      </li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+		      <li class="nav-item dropdown">
+		        {% if user.is_authenticated %}
+				  <div class="dropdown dropleft" style="margin-right:75px">
+  					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{user.username}}
+  					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="{% url 'accounts:profileView' %}">View Profile</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{% url 'accounts:logoutView' %}">Logout</a>
+					</div>
+				  </div>
+			  </li>
+				{% else %}
+				<li class="nav-item dropdown">
+					<div class="dropdown dropleft" style="margin-right:75px">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a class="dropdown-item" href="{% url 'accounts:loginView' %}">View Profile</a>
+							<a class="dropdown-item" href="#">Edit Profile</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'accounts:logoutView' %}">Login</a>
+						</div>
+					</div>
+			  </li>
+				{% endif %}
+		      </li>
+			</ul>
+        </div>
+    </nav>
+<!-- Load icon library -->
+    <style>
+        body { font-family: Arial; }
+        * { box-sizing: border-box; }
+        form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+        }
+        form.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+        }
+        form.example button:hover {
+            background: #0b7dda;
+        }
+        form.example::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .indent-1 { float: left; }
+        .indent-1 section { width:20%; float:left; }
+
+		.column {
+			display:block;
+			float: left;
+			padding: 5px;
+		}
+    </style>
+</head>
+<body>
+	<form action="" method="GET">
+		<div class="container" style="margin:auto">
+			<div class="column"style="width:30%">
+				<h3>Search for Tribes</h3>
+				{% csrf_token %}
+				<!--Input for django form-->
+				<input style="width: 60%" type="text" placeholder="Search..." name="searchField" value="{{ request.GET.searchField }}" required>
+				<!--<input type="text"placeholder="Search..."name="search">-->
+				<input class="btn btn-secondary" style="width: 30%" type="submit" value="Search" id="button">
+				<hr>
+				<h5>Tribes you may be interested in...</h5>
+				<p style="color:darkgray">This feature is not implemented yet. This area will show tribes that match the current accounts interests.</p>
+			</div>
+			<div class="column"style="width:70%">
+				<h3>Results matching: </h3>
+					{% for obj in object_list %}
+						<!--Search for a tribe in tribes-->
+						<label><b>Tribe Name: </b>{{ obj.tribeName }}</label>
+						<br>
+						<label><b>Base location: </b>{{ obj.location }}</label>
+						<br>
+						<label><b>Privacy Mode: </b>{{ obj.privacyMode }}</label>
+						<br>
+						<label><b>Description: </b>{{ obj.description }}</label>
+						<br>
+						<a href="{% url 'tribes:tribeHomePage' obj.tribeID %}"><button type="button" id="viewTribeButton" class="btn btn-secondary">View Tribe Page</button></a>
+					<hr>
+					{% endfor %}
+			</div>
+    	</div>
+	</form>
+</body>
+
+</html>
